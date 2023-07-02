@@ -1,0 +1,29 @@
+{% extends "layout/basic.html" %}
+{% load thumbnail %}
+{% load bootstrap4 %}
+{% load static %}
+{% block content %}
+	<h2>Новые объявления</h2>
+	{% if bbs %}
+	<ul class="list-unstyled">
+		{% for bb in bbs %}
+		<li class="media my-5 p-3 border">
+			{% url 'detail' rubric_pk=bb.rubric_id pk=bb.pk as url %}
+			<a href="{{url}}{{all}}">
+				{% if bb.image %}
+				<img src="{% thumbnail bb.image 'default' %}" alt="" class="mr-3">
+				{% else %}
+				<img src="{% static 'main/empty.jpg' %}" alt="Нет фото" class="mr-3">
+			</a>
+			{% endif %}
+			<div class="media-body">
+				<h3><a href="{{url}}{{all}}">{{bb.title}}</a></h3>
+				<div>{{bb.title}}</div>
+				<p class="text-right font-weight-bold">{{bb.price}} руб.</p>
+				<p class="text-right font-italic">{{bb.create_date}}</p>
+			</div>
+		</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+{% endblock content %}

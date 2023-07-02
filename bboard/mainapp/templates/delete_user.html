@@ -1,0 +1,17 @@
+{% extends "layout/basic.html" %}
+{% load bootstrap4 %}
+{% load static %}
+
+
+{% block title %}Удаление пользователя{% endblock title %}
+
+{% block content %}
+<h2>Удаление пользователя </h2>
+
+<form method="post">
+	{% csrf_token %}
+	{% bootstrap_form form layout='horizontal'%}
+	<input type="hidden" name="text" value="{{text}}">
+	{% buttons submit='Удалить'%}{% endbuttons%}
+</form>
+{% endblock content %}

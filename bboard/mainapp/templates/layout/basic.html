@@ -1,0 +1,71 @@
+{% load bootstrap4 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+	<title>{% block title %}Главная{% endblock title %} - Доска объявлений</title>
+	{% bootstrap_css %}
+	<link rel="stylesheet" href="{% static 'main/style.css' %}">
+	{% bootstrap_javascript jquery='slim' %}
+</head>
+<body>
+	<div class="container-fluid">
+		<!--Шапка сайта-->
+		<header class="mb-4">
+			<h1 class="display-1 text-center">Объявления</h1>
+		</header>
+		<!--Навигация сайта-->
+		<div class="row">
+			<ul class="col nav justify-content-end border">
+				<li class="nav-item">
+					<a href="{% url 'register' %}" class="nav-link">Регистрация</a>
+				</li>
+				{% if user.is_authenticated %}
+				<li class="nav-item dropdown"><a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Профиль</a>
+					<div class="dropdown-menu">
+						<a href="{% url 'profile' %}" class="dropdown-item">Мои объявления</a>
+						<a href="{% url 'changeProfile' %}" class="dropdown-item">Изменить личные данные</a>
+						<a href="{% url 'changePassword' %}" class="dropdown-item">Изменить пароль</a>
+						<div class="dropdown-divider"></div>
+						<a href="{% url 'logout' %}" class="dropdown-item">Выйти</a>
+						<div class="dropdown-divider"></div>
+						<a href="{% url 'delete_user' %}" class="dropdown-item">Удалить</a>
+					</div>
+				</li>
+				{% else %}
+				<li class="nav-item">
+					<a href="{% url 'login' %}" class="nav-link">Авторизация</a>
+				</li>
+				{% endif %}
+			</ul>
+		</div>
+		<!--Навигация сайта-->
+		<div class="row">
+			<nav class="col-md-auto nav flex-column border">
+				<a href="{% url 'index' %}" class="nav-link root">Главная</a>
+				{% for rubric in rubrics %}
+				{% ifchanged rubric.super_rubric.pk %}
+				<span class="nav-link root font-weight-bold">
+					{{ rubric.super_rubric.name}}
+				</span>
+				{% endifchanged %}
+				<a href="{% url 'by_rubric' pk=rubric.pk %}" class="nav-link">{{rubric.name}}</a>
+				{% endfor %}
+				<a href="{% url 'about' %}" class="nav-link root">О сайте</a>
+			</nav>
+			<!--Секция содержимое сайта - ДИНАМИЧЕСКОЕ -->
+			<section class="col border py-2">
+				{% bootstrap_messages %}
+				{% block content %}
+				{% endblock content %}
+			</section>
+		</div>
+		<!--Секция подвал сайта  -->
+		<footer class="mt-3">
+			<p class="text-center font-italic">&copy тестовый сайт объявлений</p>
+		</footer>
+	</div>
+</body>
+</html>
